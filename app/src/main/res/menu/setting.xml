@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/slow"
+        android:title="Slow Animation"
+        android:checkable="true"
+        android:checked="false"/>
+
+    <item
+        android:id="@+id/touch"
+        android:title="Base on touch location"
+        android:checkable="true"
+        android:checked="false"/>
+
+</menu>

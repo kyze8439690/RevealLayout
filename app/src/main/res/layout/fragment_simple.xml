@@ -1,0 +1,15 @@
+<me.yugy.github.reveallayout.RevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/reveal_layout">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="32sp"
+        android:textColor="#FFF"
+        />
+
+</me.yugy.github.reveallayout.RevealLayout>

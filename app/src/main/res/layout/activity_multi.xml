@@ -1,0 +1,39 @@
+<me.yugy.github.reveallayout.RevealLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/reveal_layout"
+                tools:context=".MainActivity">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Use this layout on api 18+ devices because of the hardware acceleration issue"
+        android:background="@android:color/holo_blue_dark"
+        android:gravity="center"
+        android:textSize="32sp"
+        android:textColor="#FFF"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="At last, enjoy it!"
+        android:background="@android:color/holo_purple"
+        android:gravity="center"
+        android:textSize="32sp"
+        android:textColor="#FFF"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="ClickToToggleViews"
+        android:background="@android:color/holo_green_dark"
+        android:gravity="center"
+        android:textSize="32sp"
+        android:textColor="#FFF"
+        />
+
+</me.yugy.github.reveallayout.RevealLayout>
