@@ -33,7 +33,7 @@ public class MainActivity extends ListActivity {
                         startActivity(new Intent(MainActivity.this, MultiChildActivity.class));
                         break;
                     case 2:
-                        startActivity(new Intent(MainActivity.this, FragmentActivity.class));
+                        startActivity(new Intent(MainActivity.this, FragmentSampleActivity.class));
                         break;
                 }
             }

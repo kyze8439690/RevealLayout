@@ -1,8 +1,6 @@
 package me.yugy.github.reveallayout;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
@@ -11,6 +9,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
  * Created by yugy on 14/11/21.
@@ -32,10 +34,11 @@ public class RevealLayout extends FrameLayout{
         this(context, attrs, 0);
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public RevealLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mClipPath = new Path();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
     }
@@ -202,45 +205,5 @@ public class RevealLayout extends FrameLayout{
             return super.drawChild(canvas, child, drawingTime);
         }
     }
-//
-//    @Override
-//    protected FrameLayout.LayoutParams generateDefaultLayoutParams() {
-//        return new LayoutParams();
-//    }
-//
-//    @Override
-//    protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
-//        return p instanceof MarginLayoutParams
-//                ? new LayoutParams((MarginLayoutParams) p)
-//                : new LayoutParams(p);
-//    }
-//
-//    @Override
-//    protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
-//        return p instanceof LayoutParams && super.checkLayoutParams(p);
-//    }
-//
-//    public static class LayoutParams extends FrameLayout.LayoutParams {
-//
-//        boolean firstItem = true;
-//
-//        public LayoutParams() {
-//            super(MATCH_PARENT, MATCH_PARENT);
-//        }
-//
-//        public LayoutParams(ViewGroup.LayoutParams source) {
-//            super(source);
-//        }
-//
-//        public LayoutParams(MarginLayoutParams source) {
-//            super(source);
-//        }
-//
-//
-//        public LayoutParams(Context c, AttributeSet attrs) {
-//            super(c, attrs);
-//        }
-//    }
-
 
 }

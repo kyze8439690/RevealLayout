@@ -22,7 +22,7 @@
         <activity android:name=".MultiChildActivity"
                   android:label="MultiChildActivity"
                   />
-        <activity android:name=".FragmentActivity"
+        <activity android:name=".FragmentSampleActivity"
                   android:label="FragmentActivity"
                   />
     </application>

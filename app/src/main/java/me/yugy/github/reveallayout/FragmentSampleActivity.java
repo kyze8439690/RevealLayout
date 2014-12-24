@@ -1,9 +1,8 @@
 package me.yugy.github.reveallayout;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.TextView;
 /**
  * Created by yugy on 14/11/21.
  */
-public class FragmentActivity extends Activity {
+public class FragmentSampleActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +20,7 @@ public class FragmentActivity extends Activity {
         setContentView(R.layout.activity_fragment);
 
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, SimpleFragment.newInstance(0))
                     .commit();
         }
@@ -33,11 +32,11 @@ public class FragmentActivity extends Activity {
         private TextView mTextView;
         private int mIndex;
         private static final int[] COLOR_LIST = new int[]{
-            android.R.color.holo_blue_light,
-            android.R.color.holo_green_light,
-            android.R.color.holo_orange_dark,
-            android.R.color.holo_purple,
-            android.R.color.holo_red_light,
+            0xff33b5e5,
+            0xff99cc00,
+            0xffff8800,
+            0xffaa66cc,
+            0xffff4444,
         };
 
         public static SimpleFragment newInstance(int index) {
@@ -54,7 +53,7 @@ public class FragmentActivity extends Activity {
             mRevealLayout = (RevealLayout) rootView.findViewById(R.id.reveal_layout);
             mTextView = (TextView) rootView.findViewById(R.id.text);
             mIndex = getArguments().getInt("index");
-            mTextView.setBackgroundResource(COLOR_LIST[mIndex % 5]);
+            mTextView.setBackgroundColor(COLOR_LIST[mIndex % 5]);
             mTextView.setText("Fragment " + mIndex);
             mRevealLayout.setContentShown(false);
             mRevealLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
