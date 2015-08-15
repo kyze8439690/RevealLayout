@@ -5,14 +5,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.FrameLayout;
-
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
  * Created by yugy on 14/11/21.
@@ -22,7 +21,7 @@ public class RevealLayout extends FrameLayout{
     private Path mClipPath;
     private float mClipRadius = 0;
     private int mClipCenterX, mClipCenterY = 0;
-    private Animator mAnimator;
+    private Animation mAnimation;
     private static final int DEFAULT_DURATION = 600;
     private boolean mIsContentShown = true;
 
@@ -122,23 +121,33 @@ public class RevealLayout extends FrameLayout{
 
         mClipCenterX = x;
         mClipCenterY = y;
-        float maxRadius = getMaxRadius(x, y);
+        final float maxRadius = getMaxRadius(x, y);
 
-        if (mAnimator != null && mAnimator.isRunning()) {
-            mAnimator.cancel();
-        }
+        clearAnimation();
 
-        mAnimator = ObjectAnimator.ofFloat(this, "clipRadius", 0f, maxRadius);
-        mAnimator.setInterpolator(new BakedBezierInterpolator());
-        mAnimator.setDuration(duration);
-        mAnimator.addListener(new AnimatorListenerAdapter() {
+        mAnimation = new Animation() {
             @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                setClipRadius(interpolatedTime * maxRadius);
+            }
+        };
+        mAnimation.setInterpolator(new BakedBezierInterpolator());
+        mAnimation.setDuration(duration);
+        mAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationStart(Animation animation) {
                 mIsContentShown = true;
             }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            }
         });
-        mAnimator.start();
+        startAnimation(mAnimation);
     }
 
     public void hide(int x, int y, int duration) {
@@ -152,21 +161,31 @@ public class RevealLayout extends FrameLayout{
             mClipRadius = getMaxRadius(x, y);
         }
 
-        if (mAnimator != null && mAnimator.isRunning()) {
-            mAnimator.cancel();
-        }
+        clearAnimation();
 
-        mAnimator = ObjectAnimator.ofFloat(this, "clipRadius", 0f);
-        mAnimator.setInterpolator(new BakedBezierInterpolator());
-        mAnimator.setDuration(duration);
-        mAnimator.addListener(new AnimatorListenerAdapter() {
+        mAnimation = new Animation() {
             @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                setClipRadius(getClipRadius() * (1 - interpolatedTime));
+            }
+        };
+        mAnimation.setInterpolator(new BakedBezierInterpolator());
+        mAnimation.setDuration(duration);
+        mAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
                 mIsContentShown = false;
             }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            }
         });
-        mAnimator.start();
+        startAnimation(mAnimation);
     }
 
     public void next(int x, int y, int duration) {
@@ -189,13 +208,13 @@ public class RevealLayout extends FrameLayout{
     }
 
     @Override
-    protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
+    protected boolean drawChild(@NonNull Canvas canvas, @NonNull View child, long drawingTime) {
         if (indexOfChild(child) == getChildCount() - 1) {
             boolean result;
             mClipPath.reset();
             mClipPath.addCircle(mClipCenterX, mClipCenterY, mClipRadius, Path.Direction.CW);
 
-            Log.d("RevealLayout", "ClipRadius: " + mClipRadius);
+//            Log.d("RevealLayout", "ClipRadius: " + mClipRadius);
             canvas.save();
             canvas.clipPath(mClipPath);
             result = super.drawChild(canvas, child, drawingTime);

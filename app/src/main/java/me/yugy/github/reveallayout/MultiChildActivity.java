@@ -2,6 +2,7 @@ package me.yugy.github.reveallayout;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 import java.lang.reflect.Field;
 
 
-public class MultiChildActivity extends Activity {
+public class MultiChildActivity extends AppCompatActivity {
 
     private RevealLayout mRevealLayout;
     private boolean mIsAnimationSlowDown = false;
