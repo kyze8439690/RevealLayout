@@ -1,5 +1,6 @@
 package me.yugy.github.reveallayout;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -59,7 +60,12 @@ public class FragmentSampleActivity extends FragmentActivity {
             mRevealLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    mRevealLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        mRevealLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    } else {
+                        //noinspection deprecation
+                        mRevealLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    }
                     mRevealLayout.postDelayed(new Runnable() {
                         @Override
                         public void run() {
