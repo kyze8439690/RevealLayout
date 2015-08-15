@@ -1,6 +1,7 @@
 RevealLayout([Google Play](https://play.google.com/store/apps/details?id=me.yugy.github.reveallayout))
 ============
 
+[![Build Status](https://travis-ci.org/kyze8439690/RevealLayout.svg?branch=master)](https://travis-ci.org/kyze8439690/RevealLayout)  
 A layout which can make some reveal animation which is introduced in material design guideline.
 
 ## Overview
