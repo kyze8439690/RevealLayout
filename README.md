@@ -21,5 +21,6 @@ A layout which can make some reveal animation which is introduced in material de
 
 ## Changelog
 
+- 1.0.2: remove nineoldandroids, support fragment back animation, update demo appcompat version, support animation callback.
 - 1.0.1: make api level lower
 - 1.0.0: release
