@@ -6,8 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 /**
  * Created by yugy on 14/11/21.
  */
+@SuppressWarnings("unused")
 public class RevealLayout extends FrameLayout{
 
     private Path mClipPath;
@@ -82,39 +83,31 @@ public class RevealLayout extends FrameLayout{
         show(DEFAULT_DURATION);
     }
 
-    public void hide() {
-        hide(DEFAULT_DURATION);
-    }
-
-    public void next() {
-        next(DEFAULT_DURATION);
-    }
-
     public void show(int duration) {
-        show(getWidth() / 2, getHeight() / 2, duration);
-    }
-
-    public void hide(int duration) {
-        hide(getWidth() / 2, getHeight() / 2, duration);
-    }
-
-    public void next(int duration) {
-        next(getWidth() / 2, getHeight() / 2, duration);
+        show(duration, null);
     }
 
     public void show(int x, int y) {
-        show(x, y, DEFAULT_DURATION);
+        show(x, y, DEFAULT_DURATION, null);
     }
 
-    public void hide(int x, int y) {
-        hide(x, y, DEFAULT_DURATION);
+    public void show(@Nullable Animation.AnimationListener listener) {
+        show(DEFAULT_DURATION, listener);
     }
 
-    public void next(int x, int y) {
-        next(x, y, DEFAULT_DURATION);
+    public void show(int duration, @Nullable Animation.AnimationListener listener) {
+        show(getWidth() / 2, getHeight() / 2, duration, listener);
+    }
+
+    public void show(int x, int y, @Nullable Animation.AnimationListener listener) {
+        show(x, y, DEFAULT_DURATION, null);
     }
 
     public void show(int x, int y, int duration) {
+        show(x, y, duration, null);
+    }
+
+    public void show(int x, int y, int duration, @Nullable final Animation.AnimationListener listener) {
         if (x < 0 || x > getWidth() || y < 0 || y > getHeight()) {
             throw new RuntimeException("Center point out of range or call method when View is not initialed yet.");
         }
@@ -136,21 +129,58 @@ public class RevealLayout extends FrameLayout{
         mAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationRepeat(Animation animation) {
+                if (listener != null) {
+                    listener.onAnimationRepeat(animation);
+                }
             }
 
             @Override
             public void onAnimationStart(Animation animation) {
                 mIsContentShown = true;
+                if (listener != null) {
+                    listener.onAnimationStart(animation);
+                }
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                if (listener != null) {
+                    listener.onAnimationEnd(animation);
+                }
             }
         });
         startAnimation(mAnimation);
     }
 
+    public void hide() {
+        hide(DEFAULT_DURATION);
+    }
+
+    public void hide(int duration) {
+        hide(getWidth() / 2, getHeight() / 2, duration, null);
+    }
+
+    public void hide(int x, int y) {
+        hide(x, y, DEFAULT_DURATION, null);
+    }
+
+    public void hide(@Nullable Animation.AnimationListener listener) {
+        hide(DEFAULT_DURATION, listener);
+    }
+
+    public void hide(int duration, @Nullable Animation.AnimationListener listener) {
+        hide(getWidth() / 2, getHeight() / 2, duration, listener);
+    }
+
+    public void hide(int x, int y, @Nullable Animation.AnimationListener listener) {
+        hide(x, y, DEFAULT_DURATION, listener);
+    }
+
     public void hide(int x, int y, int duration) {
+        hide(x, y, duration, null);
+    }
+
+    public void hide(int x, int y, int duration, @Nullable final Animation.AnimationListener listener) {
         if (x < 0 || x > getWidth() || y < 0 || y > getHeight()) {
             throw new RuntimeException("Center point out of range or call method when View is not initialed yet.");
         }
@@ -175,20 +205,57 @@ public class RevealLayout extends FrameLayout{
             @Override
             public void onAnimationStart(Animation animation) {
                 mIsContentShown = false;
+                if (listener != null) {
+                    listener.onAnimationStart(animation);
+                }
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
+                if (listener != null) {
+                    listener.onAnimationRepeat(animation);
+                }
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                if (listener != null) {
+                    listener.onAnimationEnd(animation);
+                }
             }
         });
         startAnimation(mAnimation);
     }
 
+    public void next() {
+        next(DEFAULT_DURATION);
+    }
+
+    public void next(int duration) {
+        next(getWidth() / 2, getHeight() / 2, duration, null);
+    }
+
+    public void next(int x, int y) {
+        next(x, y, DEFAULT_DURATION, null);
+    }
+
+    public void next(@Nullable Animation.AnimationListener listener) {
+        next(DEFAULT_DURATION, listener);
+    }
+
+    public void next(int duration, @Nullable Animation.AnimationListener listener) {
+        next(getWidth() / 2, getHeight() / 2, duration, listener);
+    }
+
+    public void next(int x, int y, @Nullable Animation.AnimationListener listener) {
+        next(x, y, DEFAULT_DURATION, listener);
+    }
+
     public void next(int x, int y, int duration) {
+        next(x, y, duration, null);
+    }
+
+    public void next(int x, int y, int duration, @Nullable Animation.AnimationListener listener) {
         final int childCount = getChildCount();
         if (childCount > 1) {
             for (int i = 0; i < childCount; i++) {
@@ -197,7 +264,7 @@ public class RevealLayout extends FrameLayout{
                     bringChildToFront(child);
                 }
             }
-            show(x, y, duration);
+            show(x, y, duration, listener);
         }
     }
 

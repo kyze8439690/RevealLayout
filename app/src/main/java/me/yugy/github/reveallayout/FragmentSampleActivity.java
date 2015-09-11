@@ -8,12 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
 import android.widget.TextView;
+
+import java.util.List;
 
 /**
  * Created by yugy on 14/11/21.
  */
 public class FragmentSampleActivity extends AppCompatActivity {
+
+    private boolean mIsInBackAnimation = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +34,6 @@ public class FragmentSampleActivity extends AppCompatActivity {
 
     public static class SimpleFragment extends Fragment {
 
-        private RevealLayout mRevealLayout;
-        private TextView mTextView;
-        private int mIndex;
         private static final int[] COLOR_LIST = new int[]{
             0xff33b5e5,
             0xff99cc00,
@@ -39,6 +41,10 @@ public class FragmentSampleActivity extends AppCompatActivity {
             0xffaa66cc,
             0xffff4444,
         };
+
+        private RevealLayout mRevealLayout;
+        private TextView mTextView;
+        private int mIndex;
 
         public static SimpleFragment newInstance(int index) {
             SimpleFragment fragment = new SimpleFragment();
@@ -79,12 +85,44 @@ public class FragmentSampleActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     getFragmentManager().beginTransaction()
                             .addToBackStack(null)
-                            .add(R.id.container, SimpleFragment.newInstance(++mIndex))
+                            .add(R.id.container, SimpleFragment.newInstance(mIndex + 1))
                             .commit();
                 }
             });
             return rootView;
         }
 
+        public void onBackPressed(Animation.AnimationListener listener) {
+            mRevealLayout.hide(listener);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mIsInBackAnimation) return;
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        //fragments.size() is not correct.
+        final int fragmentCount = getSupportFragmentManager().getBackStackEntryCount();
+        if (fragments != null && fragmentCount > 0) {
+            Fragment lastFragment = fragments.get(fragmentCount);
+            if (lastFragment != null && lastFragment instanceof SimpleFragment) {
+                ((SimpleFragment) lastFragment).onBackPressed(new Animation.AnimationListener() {
+                    @Override public void onAnimationRepeat(Animation animation) {}
+
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        mIsInBackAnimation = true;
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        getSupportFragmentManager().popBackStackImmediate();
+                        mIsInBackAnimation = false;
+                    }
+                });
+                return;
+            }
+        }
+        super.onBackPressed();
     }
 }
