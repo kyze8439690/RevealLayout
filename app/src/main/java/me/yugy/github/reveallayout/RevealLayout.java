@@ -100,7 +100,7 @@ public class RevealLayout extends FrameLayout{
     }
 
     public void show(int x, int y, @Nullable Animation.AnimationListener listener) {
-        show(x, y, DEFAULT_DURATION, null);
+        show(x, y, DEFAULT_DURATION, listener);
     }
 
     public void show(int x, int y, int duration) {
