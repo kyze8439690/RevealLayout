@@ -189,7 +189,7 @@ public class RevealLayout extends FrameLayout{
         if (x != mClipCenterX || y != mClipCenterY) {
             mClipCenterX = x;
             mClipCenterY = y;
-            mClipRadius = maxRadius
+            mClipRadius = maxRadius;
         }
 
         clearAnimation();
