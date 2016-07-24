@@ -185,10 +185,11 @@ public class RevealLayout extends FrameLayout{
             throw new RuntimeException("Center point out of range or call method when View is not initialed yet.");
         }
 
+        final float maxRadius = getMaxRadius(x, y);
         if (x != mClipCenterX || y != mClipCenterY) {
             mClipCenterX = x;
             mClipCenterY = y;
-            mClipRadius = getMaxRadius(x, y);
+            mClipRadius = maxRadius
         }
 
         clearAnimation();
@@ -196,7 +197,7 @@ public class RevealLayout extends FrameLayout{
         mAnimation = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
-                setClipRadius(getClipRadius() * (1 - interpolatedTime));
+                setClipRadius(maxRadius * (1 - interpolatedTime));
             }
         };
         mAnimation.setInterpolator(new BakedBezierInterpolator());
