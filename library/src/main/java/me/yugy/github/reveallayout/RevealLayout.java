@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -19,11 +21,12 @@ import android.widget.FrameLayout;
 @SuppressWarnings("unused")
 public class RevealLayout extends FrameLayout{
 
+    private static final int DEFAULT_DURATION = 600;
     private Path mClipPath;
-    private float mClipRadius = 0;
     private int mClipCenterX, mClipCenterY = 0;
     private Animation mAnimation;
-    private static final int DEFAULT_DURATION = 600;
+
+    private float mClipRadius = 0;
     private boolean mIsContentShown = true;
 
     public RevealLayout(Context context) {
@@ -293,4 +296,56 @@ public class RevealLayout extends FrameLayout{
         }
     }
 
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState ss = new SavedState(superState);
+        ss.isContentShown = mIsContentShown;
+        return ss;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+
+        SavedState ss = (SavedState)state;
+        super.onRestoreInstanceState(ss.getSuperState());
+
+        setContentShown(ss.isContentShown);
+    }
+
+    public static class SavedState extends BaseSavedState {
+
+        boolean isContentShown;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(isContentShown ? 1 : 0);
+        }
+
+        @SuppressWarnings("hiding")
+        public static final Parcelable.Creator<RevealLayout.SavedState> CREATOR
+                = new Parcelable.Creator<RevealLayout.SavedState>() {
+            public RevealLayout.SavedState createFromParcel(Parcel in) {
+                return new RevealLayout.SavedState(in);
+            }
+
+            public RevealLayout.SavedState[] newArray(int size) {
+                return new RevealLayout.SavedState[size];
+            }
+        };
+
+        private SavedState(Parcel in) {
+            super(in);
+            isContentShown = in.readInt() == 1;
+        }
+    }
 }
