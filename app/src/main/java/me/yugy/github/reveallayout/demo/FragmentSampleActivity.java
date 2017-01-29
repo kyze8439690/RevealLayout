@@ -1,4 +1,4 @@
-package me.yugy.github.reveallayout;
+package me.yugy.github.reveallayout.demo;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import android.view.animation.Animation;
 import android.widget.TextView;
 
 import java.util.List;
+
+import me.yugy.github.reveallayout.RevealLayout;
 
 /**
  * Created by yugy on 14/11/21.
